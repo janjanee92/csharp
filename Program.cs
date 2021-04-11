@@ -3,15 +3,50 @@
 namespace CSharp
 {
     class Program 
-    { 
-        static int Add(int a, int b, int c = 0, float f = 1.0f, double d = 3.0)
+    {
+        enum ClassType
         {
-            return a + b + c;
+            None = 0,
+            Knight = 1,
+            Archer = 2,
+            Mage = 3
+        }
+
+        static ClassType ChooseClass()
+        {
+            Console.WriteLine("직업을 선택하세요.");
+            Console.WriteLine("1. 기사");
+            Console.WriteLine("2. 궁수");
+            Console.WriteLine("3. 법사");
+
+            ClassType choice = ClassType.None;
+            string input = Console.ReadLine();
+
+            switch (input)
+            {
+                case "1":
+                    choice = ClassType.Knight;
+                    break;
+                case "2":
+                    choice = ClassType.Archer;
+                    break;
+                case "3":
+                    choice = ClassType.Mage;
+                    break;
+            }
+
+            return choice;
         }
 
         static void Main(string[] args)
         {
-            Add(1, 2, d: 2.0);
+            ClassType choice = ClassType.None;
+
+            while (choice == ClassType.None)
+            {
+                choice = ChooseClass();
+            }
+            
         }
     }
 }
