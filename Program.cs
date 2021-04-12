@@ -2,64 +2,71 @@
 
 namespace CSharp
 {
-    // Ref
-    class Knight
+
+    class Player
     {
+        static public int counter = 1;
+
+        public int id;
         public int hp;
         public int attack;
-        public Knight Clone()
+
+        public Player()
         {
-            Knight clone = new Knight();
-            clone.hp = hp;
-            clone.attack = attack;
-            return clone;
+            Console.WriteLine("플레이어 생성자 호출!");
         }
 
+        public Player(int hp)
+        {
+            this.hp = hp;
+            Console.WriteLine("플레이어 hp 생성자 호출");
+        }
         public void Move()
         {
-            Console.WriteLine("Knight Move");
+            Console.WriteLine("Player Move");
         }
 
         public void Attack()
         {
-            Console.WriteLine("Knight Attack");
+            Console.WriteLine("Player Attack");
         }
+
+    }
+    class Mage : Player
+    {
+
     }
 
-    // Copy
-    struct Mage
+    class Archer : Player
     {
-        public int hp;
-        public int attack;
+        
+    }
+
+    // Ref
+    class Knight : Player
+    {
+
+        public Knight() : base(100)
+        {
+            base.attack = 20;
+            Console.WriteLine("Knight 생성자 호출");
+        }
+
+        static public Knight CreateKnight()
+        {
+            Knight knight = new Knight();
+            knight.hp = 100;
+            return knight;
+        }
+
     }
 
     class Program 
     {
-        static void KillMage(ref Mage mage)
-        {
-            mage.hp = 0;
-        }
-
-        static void KillKnight(Knight knight)
-        {
-            knight.hp = 0;
-        }
-
         static void Main(string[] args)
         {
-            Mage mage = new Mage();
-            mage.hp = 100;
-            mage.attack = 50;
-
-            Mage mage2 = mage;
-            mage2.hp = 0;
-
-            Knight knight = new Knight();
-            knight.hp = 100;
-            knight.attack = 10;
-
-            Knight knight2 = knight.Clone();
-            knight.hp = 0;
+            Knight k = Knight.CreateKnight();
+            k.Move();
         }
     }
 }
