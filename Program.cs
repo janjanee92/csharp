@@ -2,213 +2,64 @@
 
 namespace CSharp
 {
+    // Ref
+    class Knight
+    {
+        public int hp;
+        public int attack;
+        public Knight Clone()
+        {
+            Knight clone = new Knight();
+            clone.hp = hp;
+            clone.attack = attack;
+            return clone;
+        }
+
+        public void Move()
+        {
+            Console.WriteLine("Knight Move");
+        }
+
+        public void Attack()
+        {
+            Console.WriteLine("Knight Attack");
+        }
+    }
+
+    // Copy
+    struct Mage
+    {
+        public int hp;
+        public int attack;
+    }
+
     class Program 
     {
-        enum ClassType
+        static void KillMage(ref Mage mage)
         {
-            None = 0,
-            Knight = 1,
-            Archer = 2,
-            Mage = 3
+            mage.hp = 0;
         }
 
-        struct Player
+        static void KillKnight(Knight knight)
         {
-            public int hp;
-            public int attack;
-        }
-
-        enum MonsterType
-        {
-            None = 0,
-            Slime = 1,
-            Orc = 2,
-            Skeleton = 3
-        }
-
-        struct Monster
-        {
-            public int hp;
-            public int attack;
-        }
-
-        static ClassType ChooseClass()
-        {
-            Console.WriteLine("직업을 선택하세요.");
-            Console.WriteLine("1. 기사");
-            Console.WriteLine("2. 궁수");
-            Console.WriteLine("3. 법사");
-
-            ClassType choice = ClassType.None;
-            string input = Console.ReadLine();
-
-            switch (input)
-            {
-                case "1":
-                    choice = ClassType.Knight;
-                    break;
-                case "2":
-                    choice = ClassType.Archer;
-                    break;
-                case "3":
-                    choice = ClassType.Mage;
-                    break;
-            }
-
-            return choice;
-        }
-
-        static void CreatePlayer(ClassType choice, out Player player)
-        {
-            // 기사(100/10) 궁수(75/12) 법사(50/15)
-            switch (choice)
-            {
-                case ClassType.Knight:
-                    player.hp = 100;
-                    player.attack = 10;
-                    break;
-                case ClassType.Archer:
-                    player.hp = 75;
-                    player.attack = 12;
-                    break;
-                case ClassType.Mage:
-                    player.hp = 50;
-                    player.attack = 15;
-                    break;
-                default:
-                    player.hp = 0;
-                    player.attack = 0;
-                    break;
-            }    
-        }
-
-        static void CreateRandomMonster(out Monster monster)
-        {
-            Random rand = new Random();
-            int randMonster = rand.Next(1, 4);
-
-            switch (randMonster)
-            {
-                case (int)MonsterType.Slime:
-                    monster.hp = 20;
-                    monster.attack = 2;
-                    Console.WriteLine("슬라임이 나타났다!!");
-                    break;
-                case (int)MonsterType.Orc:
-                    monster.hp = 40;
-                    monster.attack = 4;
-                    Console.WriteLine("오크가 나타났다!!");
-                    break;
-                case (int)MonsterType.Skeleton:
-                    monster.hp = 30;
-                    monster.attack = 3;
-                    Console.WriteLine("스켈레톤이 나타났다!!");
-                    break;
-                default:
-                    monster.hp = 0;
-                    monster.attack = 0;
-                    break;
-            }
-            // 랜덤으로 1~3 몬스터 중 하나를 리스폰
-
-        }
-
-        static void Fight(ref Player player, ref Monster monster)
-        {
-            while (true)
-            {
-                monster.hp -= player.attack;
-                if (monster.hp <= 0)
-                {
-                    Console.WriteLine("이겼습니다!!");
-                    Console.WriteLine($"남은체력 : {player.hp}");
-                    break;
-                }
-
-                player.hp -= monster.attack;
-                if (player.hp <= 0)
-                {
-                    Console.WriteLine("패배했습니다!");
-                    break;
-                }
-            }
-        }
-
-        static void EnterField(ref Player player)
-        {
-            while (true)
-            {
-                Console.WriteLine("필드에 접속했습니다!!");
-
-                //  몬스터 생성
-                Monster monster;
-                CreateRandomMonster(out monster);
-
-                Console.WriteLine("1. 전투 모드로 돌입");
-                Console.WriteLine("2. 일정확률로 마을로 도망");
-
-                string input = Console.ReadLine();
-                if (input == "1")
-                {
-                    Fight(ref player, ref monster);
-                }
-                else if (input == "2")
-                {
-                    Random rand = new Random();
-                    int randValue = rand.Next(0, 101);
-                    if (randValue <= 33)
-                    {
-                        Console.WriteLine("도망! 성공");
-                        break;
-                    }
-                    else
-                    {
-                        Fight(ref player, ref monster);
-                    }
-                }
-            }
-
-        }
-
-        static void EnterGame(ref Player player)
-        {
-            while (true)
-            {
-                Console.WriteLine("마을에 접속했습니다!");
-                Console.WriteLine("1.필드");
-                Console.WriteLine("2.로비");
-
-                string input = Console.ReadLine();
-
-                if (input == "1")
-                {
-                    EnterField(ref player);
-                }
-                else if ( input == "2")
-                {
-                    break;
-                }
-            }
-             
+            knight.hp = 0;
         }
 
         static void Main(string[] args)
         {
-            
-            while (true)
-            {
-                ClassType choice = ChooseClass();
-                if (choice == ClassType.None)
-                    continue;
-                
-                //  캐릭터 생성
-                Player player;
-                CreatePlayer(choice, out player);
+            Mage mage = new Mage();
+            mage.hp = 100;
+            mage.attack = 50;
 
-                // 필드로 가서 몬스터랑 싸우기
-                EnterGame(ref player);
-            }
-            
+            Mage mage2 = mage;
+            mage2.hp = 0;
+
+            Knight knight = new Knight();
+            knight.hp = 100;
+            knight.attack = 10;
+
+            Knight knight2 = knight.Clone();
+            knight.hp = 0;
         }
     }
 }
